@@ -1,0 +1,29 @@
+- name: create kube init work directory
+  file:
+    path: $HOME/kube-init
+    state: directory
+
+- name: set SELINUX to permissive
+  shell: setenforce 0 && touch setenforce.txt
+  args:
+    chdir: $HOME/kube-init
+    creates: setenforce.txt
+
+- name: set SELINUX to permissive on reboot
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: disable swap
+  shell: swapoff -a && touch swapoff.txt
+  args:
+    chdir: $HOME/kube-init
+    creates: swapoff.txt
+
+- name: disable swap on reboot
+  replace:
+    path: /etc/fstab
+    regexp: '^[^#].*swap'
+    replace: '#\0'
+    backup: yes
+

@@ -1,0 +1,36 @@
+- name: ensure vm.max_map_count is set to 655300
+  sysctl:
+    name: vm.max_map_count
+    value: 655300
+    state: present
+
+- name: disable ipv6 (1/2)
+  sysctl:
+    name: net.ipv6.conf.all.disable_ipv6
+    value: 1
+    state: present
+
+- name: disable ipv6 (2/2)
+  sysctl:
+    name: net.ipv6.conf.default.disable_ipv6
+    value: 1
+    state: present
+
+- name: ensure net.bridge.bridge-nf-call-ip6tables is set to 1
+  sysctl:
+    name: net.bridge.bridge-nf-call-ip6tables
+    value: 1
+    state: present
+
+- name: ensure net.bridge.bridge-nf-call-iptables is set to 1
+  sysctl:
+    name: net.bridge.bridge-nf-call-iptables
+    value: 1
+    state: present
+
+- name: ensure net.core.rmem_max is set to 1048576
+  sysctl:
+    name: net.core.rmem_max
+    value: 1048576
+    state: present
+

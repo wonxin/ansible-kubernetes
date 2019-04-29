@@ -1,0 +1,35 @@
+- name: install device-mapper-persistent-data,lvm2
+  yum:
+    name:
+      - device-mapper-persistent-data
+      - lvm2
+    state: present
+    update_cache: true
+
+- name: install docker-ce,docker-ce-cli,containerd.io
+  yum:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: present
+
+- name: start docker-ce
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: install kubelet, kubeadm
+  yum:
+    name:
+      - "kubelet-{{ KUBE_VERSION }}"
+      - "kubeadm-{{ KUBE_VERSION }}"
+    state: present
+
+- name: start kubelet
+  systemd:
+    name: kubelet
+    enabled: yes
+    state: started
+

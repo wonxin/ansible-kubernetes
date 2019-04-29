@@ -1,0 +1,24 @@
+- hosts: masters:workers
+  gather_facts: no
+  roles:
+    - { role: kube-cluster/prepare-os }
+    - { role: kube-cluster/dependencies }
+
+- hosts: masters[0]
+  gather_facts: no
+  roles:
+    - { role: kube-cluster/kubectl }
+    - { role: kube-cluster/masters }
+
+- hosts: masters[0]
+  gather_facts: no
+  become: yes
+  become_user: "{{ KUBE_ADMIN_USER }}"
+  roles:
+    - { role: kube-cluster/calico }
+
+- hosts: workers
+  gather_facts: no
+  roles:
+    - { role: kube-cluster/workers }
+

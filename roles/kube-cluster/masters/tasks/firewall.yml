@@ -1,0 +1,48 @@
+- name: open required ports (1/5 Kubernetes API server)
+  firewalld:
+    port: 6443/tcp
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+#- name: open required ports (2/5 etcd server client API)
+#  firewalld:
+#    port: 2379-2380/tcp
+#    permanent: yes
+#    state: enabled
+#    immediate: yes
+
+- name: open required ports (3/5 Kubelet API)
+  firewalld:
+    port: 10250/tcp
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: open required ports (4/5 Calico BGP)
+  firewalld:
+    port: 179/tcp
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: open required ports (5/5 Calico VXLAN)
+  firewalld:
+    port: 4789/udp
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+#- name: open required ports (4/5 kube-scheduler)
+#  firewalld:
+#    port: 10251/tcp
+#    permanent: yes
+#    state: enabled
+#    immediate: yes
+
+#- name: open required ports (5/5 kube-controller-manager)
+#  firewalld:
+#    port: 10252/tcp
+#    permanent: yes
+#    state: enabled
+#    immediate: yes
