@@ -1,14 +1,45 @@
 - hosts: masters:workers
   gather_facts: no
   roles:
-    - { role: kube-cluster/prepare-os }
-    - { role: kube-cluster/dependencies }
+    - { role: kube-cluster/prepareOS }
+
+- hosts: masters:workers
+  gather_facts: no
+  roles:
+    - { role: kube-cluster/docker }
+  tags:
+    - docker
+
+- hosts: masters:workers
+  gather_facts: no
+  roles:
+    - { role: kube-cluster/packages }
+  tags:
+    - packages
+
+- hosts: masters
+  gather_facts: no
+  vars:
+    node_role: master
+  roles:
+    - { role: kube-cluster/images }
+  tags:
+    - images
+
+- hosts: workers
+  gather_facts: no
+  vars:
+    node_role: worker
+  roles:
+    - { role: kube-cluster/images }
+  tags:
+    - images
 
 - hosts: masters[0]
   gather_facts: no
   roles:
-    - { role: kube-cluster/kubectl }
-    - { role: kube-cluster/masters }
+    - { role: kube-cluster/init }
+    - { role: kube-cluster/adminUser }
 
 - hosts: masters[0]
   gather_facts: no
@@ -16,9 +47,10 @@
   become_user: "{{ KUBE_ADMIN_USER }}"
   roles:
     - { role: kube-cluster/calico }
+  tags:
+    - network
 
 - hosts: workers
   gather_facts: no
   roles:
-    - { role: kube-cluster/workers }
-
+    - { role: kube-cluster/join }

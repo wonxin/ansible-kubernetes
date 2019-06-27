@@ -1,0 +1,13 @@
+- name: install kubelet, kubeadm
+  yum:
+    name:
+      - "kubelet-{{ KUBE_VERSION }}"
+      - "kubeadm-{{ KUBE_VERSION }}"
+    state: present
+
+- name: start kubelet
+  systemd:
+    name: kubelet
+    enabled: yes
+    state: started
+    daemon_reload: yes

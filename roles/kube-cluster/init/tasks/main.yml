@@ -1,6 +1,3 @@
-# pull k8s images
-- import_tasks: pull_images.yml
-
 # open firewalld ports
 - import_tasks: firewall.yml
 

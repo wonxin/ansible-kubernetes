@@ -1,9 +1,3 @@
-- name: install kubectl
-  yum:
-    name: "kubectl-{{ KUBE_VERSION }}"
-    state: present
-    allow_downgrade: yes
-
 - name: create kube-cluster admin user (kube-admin-user 1/4)
   user:
     name: "{{ KUBE_ADMIN_USER }}"
@@ -31,4 +25,3 @@
     dest: "/home/{{ KUBE_ADMIN_USER }}/.kube/config"
     remote_src: yes
     owner: "{{ KUBE_ADMIN_USER }}"
-
