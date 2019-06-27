@@ -40,4 +40,3 @@
   args:
     chdir: $HOME/kube-calico
     creates: pod_network_setup.txt
-
