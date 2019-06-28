@@ -1,0 +1,20 @@
+- name: get images list
+  shell: "kubeadm config images list"
+  register: master_images
+  changed_when: False
+  run_once: true
+
+- name: change images repo
+  delegate_to: 127.0.0.1
+  shell: "echo '{{ master_images.stdout }}' | sed -e 's#k8s.gcr.io/coredns#coredns/coredns#g' | sed -e 's/k8s.gcr.io/mirrorgooglecontainers/g'"
+  register: master_images_mirror
+  changed_when: False
+  run_once: true
+ 
+- name: pull images and tag
+  docker_image:
+    name: "{{ item.0 }}"
+    repository: "{{ item.1 }}"
+    source: pull
+    state: present
+  loop: "{{ master_images_mirror.stdout_lines | zip(master_images.stdout_lines) | list }}"

@@ -1,0 +1,21 @@
+- name: get image list
+  shell: "kubeadm config images list | grep -e 'coredns' -e 'kube-proxy'"
+  register: worker_images
+  changed_when: False
+  run_once: true
+
+- name: change images repo
+  delegate_to: 127.0.0.1
+  shell: "echo '{{ worker_images.stdout }}' | sed -e 's#k8s.gcr.io/coredns#coredns/coredns#g' -e 's/k8s.gcr.io/mirrorgooglecontainers/g'"
+  register: worker_images_mirror
+  changed_when: False
+  run_once: true
+
+- name: pull images and tag
+  docker_image:
+    name: "{{ item.0 }}"
+    repository: "{{ item.1 }}"
+    source: pull
+    state: present
+  loop: "{{ worker_images_mirror.stdout_lines | zip(worker_images.stdout_lines) | list }}"
+ 
