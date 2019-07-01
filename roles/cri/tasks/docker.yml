@@ -1,12 +1,16 @@
+- name: add docker-ce repo (aliyun mirrors)
+  get_url: 
+    url: http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+
 - name: install device-mapper-persistent-data,lvm2
   yum:
     name:
       - device-mapper-persistent-data
       - lvm2
-    state: present
     update_cache: true
+    state: present
 
-- name: install docker-ce,docker-ce-cli,containerd.io
   yum:
     name:
       - docker-ce
@@ -14,8 +18,14 @@
       - containerd.io
     state: present
 
+- name: setup daemon
+  copy:
+    src: daemon.json
+    dest: /etc/docker/
+
 - name: start docker-ce
   systemd:
     name: docker
     enabled: yes
+    daemon_reload: yes
     state: started

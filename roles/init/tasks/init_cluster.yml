@@ -16,4 +16,4 @@
   args:
     chdir: $HOME/kube-calico
     creates: taint_master.txt
-  when: TAINT_MASTER
+  when: KUBE_TAINT_MASTER

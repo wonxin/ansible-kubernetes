@@ -4,7 +4,7 @@ KUBE_VERSION: 1.15.0
 
 # master
 KUBE_MASTER_API_ADDR: 192.168.1.21
-TAINT_MASTER: true
+KUBE_TAINT_MASTER: true
 
 # calico
 KUBE_CALICO_VERSION: 3.7
@@ -13,3 +13,7 @@ KUBE_POD_CIDR: 10.241.0.0/16
 KUBE_CALICO_REACH_HOST: 192.168.1.1
 
 KUBE_ADMIN_USER: kubemgt
+
+# cri
+# docker | contrainerd
+KUBE_CRI: docker

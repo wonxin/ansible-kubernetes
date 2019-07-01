@@ -1,13 +1,33 @@
+- name: add Kubernetes' YUM repo (aliyun mirrors)
+  yum_repository:
+    name: Kubernetes
+    description: Kubernetes YUM repository
+    baseurl: https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
+    gpgcheck: yes
+    gpgkey:
+      - https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg
+      - https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+    enabled: yes
+    state: present
+
 - name: install kubelet, kubeadm
   yum:
     name:
       - "kubelet-{{ KUBE_VERSION }}"
       - "kubeadm-{{ KUBE_VERSION }}"
+    update_cache: yes
     state: present
+
+- name: configure kubelet when use containerd cri
+  lineinfile:
+    path: /etc/sysconfig/kubelet
+    regexp: '^KUBELET_EXTRA_ARGS='
+    line: KUBELET_EXTRA_ARGS=--cgroup-driver=systemd
+  when: KUBE_CRI == "containerd"
 
 - name: start kubelet
   systemd:
     name: kubelet
     enabled: yes
-    state: started
     daemon_reload: yes
+    state: started

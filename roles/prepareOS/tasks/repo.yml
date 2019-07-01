@@ -6,28 +6,9 @@
     backup: yes
   register: base_repo
 
-- name: add docker-ce repo (aliyun mirrors)
-  get_url: 
-    url: http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
-    dest: /etc/yum.repos.d/docker-ce.repo
-    force: yes
-    backup: yes
-
-- name: add Kubernetes' YUM repo (aliyun mirrors)
-  yum_repository:
-    name: Kubernetes
-    description: Kubernetes YUM repository
-    baseurl: https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/
-    gpgcheck: yes
-    gpgkey:
-      - https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg
-      - https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
-    enabled: yes
-
 - name: upgrade all packages first time
   yum:
     name: '*'
     state: latest
     update_cache: true
   when: base_repo.changed
-

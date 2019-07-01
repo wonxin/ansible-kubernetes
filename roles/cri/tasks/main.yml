@@ -1,0 +1,8 @@
+- name: docker cri
+  import_tasks: docker.yml
+  when: KUBE_CRI == "docker"
+
+
+- name: containerd cri
+  import_tasks: contrainerd.yml
+  when: KUBE_CRI == "containerd"
