@@ -27,3 +27,7 @@
     replace: '#\0'
     backup: yes
 
+- name: load br_netfilter module
+  modprobe:
+    name: br_netfilter
+    state: present

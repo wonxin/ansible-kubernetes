@@ -1,9 +1,8 @@
 # replace yum repo
 - import_tasks: repo.yml
 
-# optimize / sysctl
-- import_tasks: sysctl.yml
-
 # optimize / system
 - import_tasks: optimize.yml
 
+# optimize / sysctl
+- import_tasks: sysctl.yml

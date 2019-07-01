@@ -33,4 +33,3 @@
     name: net.core.rmem_max
     value: 1048576
     state: present
-
