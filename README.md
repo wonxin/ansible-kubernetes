@@ -33,7 +33,11 @@ Use ansible to deploy kubernetes cluster. one master, v1.15.0.
 
 * KUBE_TAINT_MASTER 
 
-  whether run pods on master node
+  whether run pods on master node, true or false
+
+* KUBE_NODE_PORT_RANGE
+
+  --service-node-port-range
 
 * KUBE_CALICO_VERSION
 
@@ -45,8 +49,8 @@ Use ansible to deploy kubernetes cluster. one master, v1.15.0.
 
 * KUBE_POD_CIDR
 
-  calico pod cidr
+  calico, CALICO_IPV4POOL_CIDR
 
 * KUBE_CALICO_REACH_HOST
 
-  calico network
+  calico, IP_AUTODETECTION_METHOD: can-reach=

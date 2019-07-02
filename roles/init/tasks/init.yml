@@ -16,4 +16,11 @@
   args:
     chdir: $HOME/kube-init
     creates: taint_master.txt
-  when: KUBE_TAINT_MASTER
+  when: KUBE_TAINT_MASTER|default(false)|bool
+
+- name: change service node port range
+  lineinfile:
+    path: /etc/kubernetes/manifests/kube-apiserver.yaml
+    insertafter: 'service-cluster-ip-range'
+    line: '    - --service-node-port-range={{ KUBE_NODE_PORT_RANGE }}'
+    state: present
