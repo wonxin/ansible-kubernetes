@@ -1,8 +1,3 @@
-- name: create init work directory
-  file:
-    path: $HOME/kube-init
-    state: directory
-
 - name: initialize the cluster
   shell: "kubeadm init
     --image-repository={{ KUBE_IMAGE_REPO }}

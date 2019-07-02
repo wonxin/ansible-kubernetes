@@ -1,34 +1,21 @@
-- name: create calico work directory
-  file:
-    path: $HOME/kube-calico
-    state: directory
-
 - name: download calico network manifest
   get_url:
-    url: "{{ KUBE_CALICO }}"
-    dest: $HOME/kube-calico/calico-{{ KUBE_CALICO_VERSION }}.yml
+    url: "{{ KUBE_CALICO_URL }}"
+    dest: $HOME/kube-init/calico-{{ KUBE_CALICO_VERSION }}.yml
 
 - name: change pod cidr
   replace:
-    path: $HOME/kube-calico/calico-{{ KUBE_CALICO_VERSION }}.yml
-    regexp: '192\.168\.0\.0/16'
-    replace: "{{ KUBE_POD_CIDR }}"
-
-- name: change log level
-  replace:
-    path: $HOME/kube-calico/calico-{{ KUBE_CALICO_VERSION }}.yml
-    regexp: '"log_level": "info"'
-    replace: '"log_level": "warning"'
-
-- name: change felix log level
-  replace:
-    path: $HOME/kube-calico/calico-{{ KUBE_CALICO_VERSION }}.yml
-    regexp: 'value: "info"'
-    replace: 'value: "warning"'
+    path: $HOME/kube-init/calico-{{ KUBE_CALICO_VERSION }}.yml
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.replace }}"
+  loop:
+    - { regexp: '192\.168\.0\.0/16', replace: '{{ KUBE_POD_CIDR }}' }
+    - { regexp: '"log_level": "info"', replace: '"log_level:" "warning"' }
+    - { regexp: 'value: "info"', replace: 'value: "warning"' }
 
 - name: change ip detect method
   blockinfile:
-    path: $HOME/kube-calico/calico-{{ KUBE_CALICO_VERSION }}.yml
+    path: $HOME/kube-init/calico-{{ KUBE_CALICO_VERSION }}.yml
     insertafter: "autodetect"
     block: |2
                   # set auto-detect method
@@ -40,5 +27,5 @@
     kubectl apply -f calico-{{ KUBE_CALICO_VERSION }}.yml
     >> pod_network_setup.txt"
   args:
-    chdir: $HOME/kube-calico
-    creates: pod_network_setup.txt
+    chdir: $HOME/kube-init
+    creates: pod_network.txt

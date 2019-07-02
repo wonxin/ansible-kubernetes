@@ -39,7 +39,7 @@ Use ansible to deploy kubernetes cluster. one master, v1.15.0.
 
   calico version
 
-* KUBE_CALICO
+* KUBE_CALICO_URL
 
   calico mainifest file url
 
