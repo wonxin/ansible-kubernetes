@@ -11,21 +11,6 @@
   tags:
     - cri
 
-# pull k8s images
-- hosts: masters
-  gather_facts: no
-  roles:
-    - { role: images/master }
-  tags:
-    - images
-
-- hosts: workers
-  gather_facts: no
-  roles:
-    - { role: images/worker }
-  tags:
-    - images
-
 # init control-plane node
 - hosts: masters[0]
   gather_facts: no

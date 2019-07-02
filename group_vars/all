@@ -3,7 +3,7 @@ KUBE_VERSION: 1.15.0
 KUBERNETES_VERSION: "v{{ KUBE_VERSION }}"
 
 # image repository
-KUBE_IMAGE_REPO: docker.io/mirrorgooglecontainers
+KUBE_IMAGE_REPO: registry.aliyuncs.com/google_containers
 
 # master
 KUBE_MASTER_API_ADDR: 192.168.1.21
