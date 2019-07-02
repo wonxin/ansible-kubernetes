@@ -1,5 +1,8 @@
+# install packages
+- import_tasks: pkgs.yml
+
 # open firewalld ports
 - import_tasks: firewall.yml
 
 # init k8s cluster
-- import_tasks: init_cluster.yml
+- import_tasks: init.yml

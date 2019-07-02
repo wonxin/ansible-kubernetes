@@ -10,10 +10,8 @@
     creates: cluster_initialized.txt
 
 - name: enable schedule pods on master
-  become: yes
-  become_user: "{{ KUBE_ADMIN_USER }}"
-  shell: kubectl taint nodes --all node-role.kubernetes.io/master- >> taint_master.txt
+  shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl taint nodes --all node-role.kubernetes.io/master- >> taint_master.txt
   args:
-    chdir: $HOME/kube-calico
+    chdir: $HOME/kube-init
     creates: taint_master.txt
   when: KUBE_TAINT_MASTER

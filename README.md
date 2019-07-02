@@ -3,13 +3,17 @@ Use ansible to deploy kubernetes cluster
 
 ### Configuration
 
-* KUBERNETES_VERSION:
-
-  kubernetes cluster version
-
 * KUBE_VERSION
 
-  kube packages version
+  kubernetes version, no begin char 'v', example: 1.15.0
+
+* KUBE_CRI
+
+  kubernetes container runtime interface, docker or containerd
+
+* KUBE_IMAGE_REPO
+
+  kubernetes image repository, --image-repository
 
 * KUBE_MASTER_API_ADDR
 
@@ -34,11 +38,3 @@ Use ansible to deploy kubernetes cluster
 * KUBE_CALICO_REACH_HOST
 
   calico network
-
-* KUBE_ADMIN_USER
-
-  kubernetes cluster admin user
-
-* KUBE_CRI
-
-  kubernetes container runtime interface

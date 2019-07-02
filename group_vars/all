@@ -1,6 +1,9 @@
 # version
-KUBERNETES_VERSION: v1.15.0
 KUBE_VERSION: 1.15.0
+KUBERNETES_VERSION: "v{{ KUBE_VERSION }}"
+
+# image repository
+KUBE_IMAGE_REPO: docker.io/mirrorgooglecontainers
 
 # master
 KUBE_MASTER_API_ADDR: 192.168.1.21
@@ -11,8 +14,6 @@ KUBE_CALICO_VERSION: 3.7
 KUBE_CALICO: https://docs.projectcalico.org/v3.7/manifests/calico.yaml
 KUBE_POD_CIDR: 10.241.0.0/16
 KUBE_CALICO_REACH_HOST: 192.168.1.1
-
-KUBE_ADMIN_USER: kubemgt
 
 # cri
 # docker | contrainerd

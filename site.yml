@@ -1,8 +1,9 @@
 - hosts: masters:workers
   gather_facts: no
   roles:
-    - { role: prepareOS }
+    - { role: prepare }
 
+# install container runtime - docker or containerd
 - hosts: masters:workers
   gather_facts: no
   roles:
@@ -10,13 +11,7 @@
   tags:
     - cri
 
-- hosts: masters:workers
-  gather_facts: no
-  roles:
-    - { role: packages }
-  tags:
-    - packages
-
+# pull k8s images
 - hosts: masters
   gather_facts: no
   roles:
@@ -31,21 +26,21 @@
   tags:
     - images
 
+# init control-plane node
 - hosts: masters[0]
   gather_facts: no
   roles:
     - { role: init }
-    - { role: adminUser }
 
+# install pod network add-on - calico
 - hosts: masters[0]
   gather_facts: no
-  become: yes
-  become_user: "{{ KUBE_ADMIN_USER }}"
   roles:
     - { role: calico }
   tags:
     - network
 
+# join nodes
 - hosts: workers
   gather_facts: no
   roles:

@@ -4,5 +4,5 @@
 
 
 - name: containerd cri
-  import_tasks: contrainerd.yml
+  import_tasks: containerd.yml
   when: KUBE_CRI == "containerd"

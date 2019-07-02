@@ -1,3 +1,6 @@
+# install packages
+- import_tasks: pkgs.yml
+
 # open firewalld ports
 - import_tasks: firewall.yml
 
