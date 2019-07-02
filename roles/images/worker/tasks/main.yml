@@ -1,25 +1,20 @@
-- name: get image list - k8s
-  shell: "kubeadm config images list 2>/dev/null
-    | grep -e coredns -e kube-proxy -e pause"
+- name: get image list
+  shell: "kubeadm config images list --image-repository {{ KUBE_IMAGE_REPO }} 2>/dev/null
+    | grep -e coredns -e kube-proxy -e pause
+    | sed -e 's#{{ KUBE_IMAGE_REPO }}/coredns#docker.io/coredns/coredns#g'"
   register: worker_images
   changed_when: False
   run_once: true
 
-- name: get image list - imageRepo
-  delegate_to: 127.0.0.1
-  shell: "echo '{{ worker_images.stdout }}'
-    | sed -e 's#k8s.gcr.io/coredns#coredns/coredns#g'
-    | sed -e 's#k8s.gcr.io#{{ KUBE_IMAGE_REPO }}#g'"
-  register: worker_images_repo
-  changed_when: False
-  run_once: true
-
-- name: pull images and tag
+- name: pull images
   docker_image:
-    name: "{{ item.0 }}"
-    repository: "{{ item.1 }}"
+    name: "{{ item }}"
     source: pull
     state: present
-  loop: "{{ worker_images_repo.stdout_lines | zip(worker_images.stdout_lines) | list }}"
+  loop: "{{ worker_images.stdout_lines | list }}"
   when: KUBE_CRI == "docker"
  
+- name: pull images
+  shell: "ctr images pull {{ item }}"
+  loop: "{{ master_images.stdout_lines | list }}"
+  when: KUBE_CRI == "containerd"

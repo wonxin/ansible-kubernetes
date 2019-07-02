@@ -4,13 +4,20 @@
     state: directory
 
 - name: initialize the cluster
-  shell: "kubeadm init --kubernetes-version={{ KUBERNETES_VERSION }} --apiserver-advertise-address={{ KUBE_MASTER_API_ADDR }} --pod-network-cidr={{ KUBE_POD_CIDR }} >> cluster_initialized.txt"
+  shell: "kubeadm init
+    --image-repository={{ KUBE_IMAGE_REPO }}
+    --kubernetes-version={{ KUBERNETES_VERSION }}
+    --apiserver-advertise-address={{ KUBE_MASTER_API_ADDR }}
+    --pod-network-cidr={{ KUBE_POD_CIDR }}
+    >> cluster_initialized.txt"
   args:
     chdir: $HOME/kube-init
     creates: cluster_initialized.txt
 
 - name: enable schedule pods on master
-  shell: KUBECONFIG=/etc/kubernetes/admin.conf kubectl taint nodes --all node-role.kubernetes.io/master- >> taint_master.txt
+  shell: "KUBECONFIG=/etc/kubernetes/admin.conf
+    kubectl taint nodes --all node-role.kubernetes.io/master-
+    >> taint_master.txt"
   args:
     chdir: $HOME/kube-init
     creates: taint_master.txt
