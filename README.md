@@ -1,5 +1,17 @@
 ## Ansible - Kubernetes
-Use ansible to deploy kubernetes cluster
+Use ansible to deploy kubernetes cluster. one master, v1.15.0.
+
+## Steps
+
+1. prepare os
+
+2. install Container Runtime
+
+3. init control-plane node
+
+4. install pod network add-on
+
+5. join nodes
 
 ### Configuration
 
