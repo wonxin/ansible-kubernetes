@@ -16,6 +16,8 @@
   gather_facts: no
   roles:
     - { role: init }
+  tags:
+    - init
 
 # install pod network add-on - calico
 - hosts: masters[0]
@@ -30,3 +32,5 @@
   gather_facts: no
   roles:
     - { role: join }
+  tags:
+    - join
