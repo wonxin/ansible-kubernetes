@@ -24,7 +24,7 @@
     path: /etc/sysconfig/kubelet
     regexp: '^KUBELET_EXTRA_ARGS='
     line: KUBELET_EXTRA_ARGS=--cgroup-driver=systemd
-  when: KUBE_CRI == "containerd"
+  when: KUBE_CRI == "containerd" or KUBE_CRI == "cri-o"
 
 - name: start kubelet
   systemd:

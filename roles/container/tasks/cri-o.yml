@@ -27,6 +27,10 @@
         name: cri-o
         update_cache: yes
         state: present
+    - lineinfile:
+        path: /etc/crio/crio.conf
+        regexp: 'cgroup_manager = "cgroupfs"'
+        line: cgroup_manager = "systemd"
     - systemd:
         name: crio
         daemon_reload: yes
