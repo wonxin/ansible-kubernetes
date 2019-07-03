@@ -1,3 +1,11 @@
+- hosts: masters[0]
+  gather_facts: no
+  tasks:
+    - name: create kube init work directory
+      file:
+        path: "{{ KUBE_INIT_DIR }}"
+        state: directory
+
 - hosts: masters:workers
   gather_facts: no
   roles:

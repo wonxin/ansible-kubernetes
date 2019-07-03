@@ -1,11 +1,11 @@
 - name: download calico network manifest
   get_url:
     url: "{{ KUBE_CALICO_URL }}"
-    dest: $HOME/kube-init/calico-{{ KUBE_CALICO_VERSION }}.yml
+    dest: "{{ KUBE_INIT_DIR }}/calico-{{ KUBE_CALICO_VERSION }}.yml"
 
 - name: change pod cidr
   replace:
-    path: $HOME/kube-init/calico-{{ KUBE_CALICO_VERSION }}.yml
+    path: "{{ KUBE_INIT_DIR }}/calico-{{ KUBE_CALICO_VERSION }}.yml"
     regexp: "{{ item.regexp }}"
     replace: "{{ item.replace }}"
   loop:
@@ -15,7 +15,7 @@
 
 - name: change ip detect method
   blockinfile:
-    path: $HOME/kube-init/calico-{{ KUBE_CALICO_VERSION }}.yml
+    path: "{{ KUBE_INIT_DIR }}/calico-{{ KUBE_CALICO_VERSION }}.yml"
     insertafter: "autodetect"
     block: |2
                   # set auto-detect method
@@ -25,7 +25,7 @@
 - name: install Pod network
   shell: "KUBECONFIG=/etc/kubernetes/admin.conf
     kubectl apply -f calico-{{ KUBE_CALICO_VERSION }}.yml
-    >> pod_network_setup.txt"
+    >> calico.txt"
   args:
-    chdir: $HOME/kube-init
-    creates: pod_network.txt
+    chdir: "{{ KUBE_INIT_DIR }}"
+    creates: calico.txt

@@ -1,28 +1,12 @@
-- name: open required ports (1/4 Kubelet API)
+- name: firewalld
   firewalld:
     port: 10250/tcp
     permanent: yes
     state: enabled
     immediate: yes
-
-- name: open required ports (2/4 NodePort Services)
-  firewalld:
-    port: 30000-32767/tcp
-    permanent: yes
-    state: enabled
-    immediate: yes
-
-- name: open required ports (3/4 Calico BGP)
-  firewalld:
-    port: 179/tcp
-    permanent: yes
-    state: enabled
-    immediate: yes
-
-- name: open required ports (4/4 Calico VXLAN)
-  firewalld:
-    port: 4789/udp
-    permanent: yes
-    state: enabled
-    immediate: yes
-
+  loop:
+    # kubelet
+    - 10250/tcp
+    # calico
+    - 179/tcp
+    - 4789/udp

@@ -1,12 +1,7 @@
-- name: create kube init work directory
-  file:
-    path: $HOME/kube-init
-    state: directory
-
 - name: set SELINUX to permissive
   shell: setenforce 0 && touch setenforce.txt
   args:
-    chdir: $HOME/kube-init
+    chdir: "{{ KUBE_INIT_DIR }}"
     creates: setenforce.txt
 
 - name: set SELINUX to permissive on reboot
@@ -17,7 +12,7 @@
 - name: disable swap
   shell: swapoff -a && touch swapoff.txt
   args:
-    chdir: $HOME/kube-init
+    chdir: "{{ KUBE_INIT_DIR }}"
     creates: swapoff.txt
 
 - name: disable swap on reboot

@@ -1,0 +1,21 @@
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: {{ KUBE_MASTER_API_ADDR }}
+nodeRegistration:
+  taints:
+{% if not KUBE_TAINT_MASTER|bool %}
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+{% endif %}
+
+---
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: ClusterConfiguration
+kubernetesVersion: {{ KUBERNETES_VERSION }}
+imageRepository: {{ KUBE_IMAGE_REPO }}
+networking:
+  podSubnet: {{ KUBE_POD_CIDR }}
+apiServer:
+  extraArgs:
+    service-node-port-range: {{ KUBE_NODE_PORT_RANGE }}

@@ -1,26 +1,27 @@
+- name: create kubeadm config file
+  template:
+    src: kubeadm-config.yml.j2
+    dest: "{{ KUBE_INIT_DIR }}/kubeadm-config.yml"
+
 - name: initialize the cluster
-  shell: "kubeadm init
-    --image-repository={{ KUBE_IMAGE_REPO }}
-    --kubernetes-version={{ KUBERNETES_VERSION }}
-    --apiserver-advertise-address={{ KUBE_MASTER_API_ADDR }}
-    --pod-network-cidr={{ KUBE_POD_CIDR }}
+  shell: "kubeadm init --config {{ KUBE_INIT_DIR }}/kubeadm-config.yml
     >> cluster_initialized.txt"
   args:
-    chdir: $HOME/kube-init
+    chdir: "{{ KUBE_INIT_DIR }}"
     creates: cluster_initialized.txt
 
-- name: enable schedule pods on master
-  shell: "KUBECONFIG=/etc/kubernetes/admin.conf
-    kubectl taint nodes --all node-role.kubernetes.io/master-
-    >> taint_master.txt"
-  args:
-    chdir: $HOME/kube-init
-    creates: taint_master.txt
-  when: KUBE_TAINT_MASTER|default(false)|bool
+#- name: enable schedule pods on master
+#  shell: "KUBECONFIG=/etc/kubernetes/admin.conf
+#    kubectl taint nodes --all node-role.kubernetes.io/master-
+#    >> taint_master.txt"
+#  args:
+#    chdir: "{{ KUBE_INIT_DIR }}"
+#    creates: taint_master.txt
+#  when: KUBE_TAINT_MASTER|default(false)|bool
 
-- name: change service node port range
-  lineinfile:
-    path: /etc/kubernetes/manifests/kube-apiserver.yaml
-    insertafter: 'service-cluster-ip-range'
-    line: '    - --service-node-port-range={{ KUBE_NODE_PORT_RANGE }}'
-    state: present
+#- name: change service node port range
+#  lineinfile:
+#    path: /etc/kubernetes/manifests/kube-apiserver.yaml
+#    insertafter: 'service-cluster-ip-range'
+#    line: '    - --service-node-port-range={{ KUBE_NODE_PORT_RANGE }}'
+#    state: present
