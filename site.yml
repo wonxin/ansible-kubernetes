@@ -15,9 +15,9 @@
 - hosts: masters:workers
   gather_facts: no
   roles:
-    - { role: cri }
+    - { role: container }
   tags:
-    - cri
+    - container
 
 # init control-plane node
 - hosts: masters[0]
