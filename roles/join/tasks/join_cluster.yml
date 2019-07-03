@@ -9,3 +9,16 @@
   args:
     chdir: $HOME
     creates: node_joined.txt
+
+- name: firewalld
+  firewalld:
+    port: 10250/tcp
+    permanent: yes
+    state: enabled
+    immediate: yes
+  loop:
+    # kubelet
+    - 10250/tcp
+    # calico
+    - 179/tcp
+    - 4789/udp

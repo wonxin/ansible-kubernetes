@@ -1,8 +1,5 @@
 # install packages
 - import_tasks: pkgs.yml
 
-# open firewalld ports
-- import_tasks: firewall.yml
-
 # join cluster
 - import_tasks: join_cluster.yml
