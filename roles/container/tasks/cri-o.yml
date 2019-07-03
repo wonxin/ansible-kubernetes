@@ -33,7 +33,7 @@
         replace: "{{ item.replace }}"
       loop:
         - { regexp: 'cgroup_manager = "cgroupfs"', replace: 'cgroup_manager = "systemd"' }
-        - { regexp: 'k8s.gcr.io/pause', replace: '{{ KUBE_IMAGE_REPO }}/pause' }
+        #- { regexp: 'pause_image = ".*/pause', replace: 'pause_image = "{{ KUBE_IMAGE_REPO }}/pause' }
     - systemd:
         name: crio
         daemon_reload: yes
