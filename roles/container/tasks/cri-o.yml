@@ -1,0 +1,34 @@
+- name: Prerequisites
+  block:
+    - modprobe:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - overlay
+        - br_netfilter
+    - sysctl:
+        name: 
+        value: 1
+        state: present
+      loop:
+        - net.bridge.bridge-nf-call-iptables
+        - net.ipv4.ip_forward
+        - net.bridge.bridge-nf-call-ip6tables
+
+- name: install cri-o
+  block:
+    - yum_repository:
+        name: cri-o
+        baseurl: https://cbs.centos.org/repos/paas7-crio-311-candidate/x86_64/os/
+        gpgcheck: no
+        enabled: yes 
+        state: present
+    - yum:
+        name: cri-o
+        update_cache: yes
+        state: present
+    - systemd:
+        name: crio
+        daemon_reload: yes
+        enabled: yes
+        state: started

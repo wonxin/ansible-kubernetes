@@ -21,7 +21,7 @@ Use ansible to deploy kubernetes cluster. one master, v1.15.0.
 
 * KUBE_CRI
 
-  kubernetes container runtime interface, docker or containerd
+  kubernetes container runtime interface, docker, containerd or cri-o.
 
 * KUBE_IMAGE_REPO
 
