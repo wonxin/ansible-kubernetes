@@ -22,7 +22,7 @@
   lineinfile:
     path: /etc/sysconfig/kubelet
     regexp: '^KUBELET_EXTRA_ARGS='
-    line: KUBELET_EXTRA_ARGS=--cgroup-driver=systemd
+    line: KUBELET_EXTRA_ARGS=--cgroup-driver=systemd --read-only-port=10255
   when: KUBE_CRI == "containerd"
 
 - name: start kubelet
